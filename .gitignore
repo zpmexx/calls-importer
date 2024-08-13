@@ -165,3 +165,6 @@ cython_debug/
 *.pdf
 *.png
 *.json
+*.txt
+importdone.py
+oneimport.py

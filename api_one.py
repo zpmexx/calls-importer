@@ -8,27 +8,10 @@ from datetime import datetime
 
 load_dotenv()
 
-
-def email_update_json(table_name, api_count, api_date, file_path='email.json'):
-    try:
-        # Load existing data from the file if it exists
-        with open(file_path, 'r') as file:
-            file_data = json.load(file)
-    except FileNotFoundError:
-        file_data = {}
-    if table_name in file_data:
-        # Update the existing entry
-        file_data[table_name]['api_count'] = api_count
-        file_data[table_name]['api_date'] = api_date
-        
-    with open(file_path, 'w') as file:
-        json.dump(file_data, file, indent=4)
-
 now = formatDateTime = None
 try:
     now = datetime.now()
     formatDateTime = now.strftime("%d/%m/%Y %H:%M")
-    formatted_date = now.strftime("%Y-%m-%d")
 except Exception as e:
     pass
 
@@ -62,16 +45,9 @@ endpoints = [GetCalls,GetCampaigns,GetCases,GetCaseCustomProperties,GetCaseTicke
              GetRecordGroups,GetRecordItems,GetRecordItemDefinitions,GetScriptitems,GetScriptitemDefinitions,
              GetSmsMessages,GetTeams,GetUsers,GetUserToTeams,GetWorkflows,GetWorkflowStates,GetWorkflowStateHistories,GetUserWorkStats]
 
-# endpoints = [GetCaseTickets]
+
 print(len(endpoints))
 
-endpoints_dict = {
-    GetCalls: 'Call', GetCampaigns: 'Campaign', GetCases: 'Case', GetCaseCustomProperties: 'CaseCustomPropertie',
-    GetCaseTickets: 'CaseTicket', GetEmailMessages: 'EmailMessage', GetRecords: 'Record', GetRecordGroups: 'RecordGroup',
-    GetRecordItems: 'RecordItem', GetRecordItemDefinitions: 'RecordItemDefinition', GetScriptitems: 'ScriptItem', GetScriptitemDefinitions: 'ScriptItemDefinition',
-    GetSmsMessages: 'SmsMessage', GetTeams: 'Team', GetUsers: 'User', GetUserToTeams: 'UserToTeam',
-    GetWorkflows: 'Workflow', GetWorkflowStates: 'WorkflowState', GetWorkflowStateHistories: 'WorkflowStateHistory', GetUserWorkStats: 'UserWorkState'
-}
 
 
 
@@ -93,35 +69,19 @@ if response.status_code == 200:
 else:
     print("No token")
 headers["Authorization"] = f"Bearer {token}"
-
-errs_number = 0
-
-with open('import_status.json', 'r') as file:
-    data = json.load(file)
-
-# Create a new dictionary with table names as keys and last_success_date as values
-table_date_dict = {key: value['last_success_date'] for key, value in data.items()}
-
-api_db_compare = {}
-with open ("pobrane_dane_licznik.txt", 'a', encoding='utf-8') as file:
+with open ("licznik.txt", 'w') as file:
     file.write(f'{formatDateTime}\n')
-    for url, table_name_endpoint in endpoints_dict.items():
-        table_import_date = table_date_dict[table_name_endpoint]
+    for url in endpoints:
         urlsplit = url.split('/')[-1].split('?')[0]
         csvname = f'csv\{urlsplit}.csv'
         #tutaj url += data z pliku
-        #od from pobiera włącznie
-        #url += f"?from={table_import_date}"
-        url += f"?from=2024-08-01"
         response = requests.get(url,headers=headers,json=data)  
         if response.status_code == 200:
             data = response.json()
-        
-            api_db_compare[table_name_endpoint] = len(data)
-            
             file.write(f'{url} - {len(data)}\n')
             print(f'{url} - {len(data)}\n')
-            print("wchodze do csv")
+
+            
             with open(csvname, mode='w', newline='') as csv_file:
                 writer = csv.writer(csv_file)
                 try:
@@ -134,12 +94,8 @@ with open ("pobrane_dane_licznik.txt", 'a', encoding='utf-8') as file:
                         writer.writerow(values)
                 except:
                     pass
-            print("koniec csv")
         else:
-            errs_number += 1
             file.write(f'{url} - blad {response.status_code}\n')
             print(f'{url} - blad {response.status_code}\n')
-    file.write(f'Liczba błędów: {errs_number}\n')
 
-for k,v in api_db_compare.items():
-    email_update_json(k,v,formatted_date)
+                
