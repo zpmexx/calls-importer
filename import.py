@@ -4,6 +4,20 @@ import os
 import chardet
 import json
 
+from datetime import datetime
+from dotenv import load_dotenv
+import json
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
+#load env file
+load_dotenv()
+
+from_address = os.getenv('from_address')
+to_address_str = os.getenv('to_address')
+password = os.getenv('password')
+
 def email_update_json(table_name, db_count, db_date, file_path='email.json'):
     try:
         # Load existing data from the file if it exists
@@ -153,29 +167,62 @@ for filename in os.listdir(folder_path):
                 update_columns = ', '.join([f"{col} = ?" for col in escape_columns[1:]])
                 update_query = f"UPDATE {escaped_table_name} SET {update_columns} WHERE {pk_column} = ?"
 
-                
-                # List to hold rows for batch insert
-                data_to_insert = []
-                # Iterate through each row in the CSV file
                 for row in csv_reader:
+                    row_count += 1
                     # Extract values from the row and handle empty fields
                     values = [row[column] or None for column in columns]
-                    
-                    # Append the row data to the list
-                    data_to_insert.append(values)
-                    row_count += 1
+                    try:
+                        # Attempt to insert the row
+                        cursor.execute(insert_query, values)
+                    except pyodbc.IntegrityError as e:
+                        if 'PRIMARY KEY' in str(e):  # Handle primary key conflict
+                            print(f"konflikt. Update. {e}")
+                            with open ('logfile.log', 'a') as logfile:
+                                logfile.write(f"Konflikt ID na tabeli {table_name} klucz {pk_column} - {e}\n")
+                                
+                            # If insert fails, attempt to update
+                            update_values = values[1:] + [values[0]]  # Exclude PK from SET clause, add PK to WHERE clause
+                            cursor.execute(update_query, update_values)
+                        else:
+                            #IntegrityError inny niz PK
+                            with open ('logfile.log', 'a') as logfile:
+                                logfile.write(f"Bład z importem danych (IntegrityError) do tabeli {table_name} - {e}\n")
+                            raise  # Reraise if it's not a primary key conflict
+                    except Exception as e:
+                        with open('logfile.log', 'a') as logfile:
+                            logfile.write(f"Problem z importem do tabeli {table_name} - {e}\n")
+                        raise  # Optionally reraise the exception if you want to stop execution
+
                 
                 api_db_compare[table_name] = row_count
                 
                 if row_count > 0:
-                # Execute the batch insert
-                    cursor.executemany(insert_query, data_to_insert)
                     conn.commit()
                     print(f"Wgrano pomyślnie do tabeli {table_name} {row_count} wierszy.\n")
                     if formatted_date:
                         write_or_update_json(table_name, formatted_date)
+                
+                ## execute many import
+                #data_to_insert = []
+                # for row in csv_reader:
+                #     # Extract values from the row and handle empty fields
+                #     values = [row[column] or None for column in columns]
+                    
+                #     # Append the row data to the list
+                #     data_to_insert.append(values)
+                #     row_count += 1
+                
+                # api_db_compare[table_name] = row_count
+                
+                # if row_count > 0:
+                # # Execute the batch insert
+                #     cursor.executemany(insert_query, data_to_insert)
+                #     conn.commit()
+                #     print(f"Wgrano pomyślnie do tabeli {table_name} {row_count} wierszy.\n")
+                #     if formatted_date:
+                #         write_or_update_json(table_name, formatted_date)
+                
             except Exception as e:
-                print(e)
                 with open ('logfile.log', 'a') as logfile:
                     logfile.write(f"Bład z plikiem {filename} - {e}\n")
 
@@ -184,13 +231,71 @@ for filename in os.listdir(folder_path):
 cursor.close()
 conn.close()       
 
-with open ('wgrane_dane_db_licznik.txt', 'a') as file:
-    file.write(f'{formatDateTime}\n')
-    for k,v in final_dict.items():
-        file.write(f'{k} - {v}\n')
-    file.write("\n")
+try: 
+    with open ('wgrane_dane_db_licznik.txt', 'a') as file:
+        file.write(f'{formatDateTime}\n')
+        for k,v in final_dict.items():
+            file.write(f'{k} - {v}\n')
+        file.write("\n")
+except Exception as e:
+    with open ('logfile.log', 'a') as logfile:
+        logfile.write(f"Problem z wgraniem do pliku wgrane_date - {e}\n")
+        
+try:
+    delete_csv_files(folder_path)
+except Exception as e:
+    with open ('logfile.log', 'a') as logfile:
+        logfile.write(f"Bład z usuwaniem plików z folderu - {e}\n")
+        
+try:
+    for k,v in api_db_compare.items():
+        email_update_json(k,v,formatted_date)
+except Exception as e:
+    with open ('logfile.log', 'a') as logfile:
+        logfile.write(f"Problem z zapisem do pliku email_podsumowanie - {e}\n")
+    
+#wysylanie maila z podsumowaniem
 
-delete_csv_files(folder_path)
+body = ''
+errors_count = 0
+#zczytywanie podsumowanie z pliku email.json
+try:
+    json_file_path = 'email.json'
+    # Read the JSON file
+    with open(json_file_path, 'r') as file:
+        data = json.load(file)
+        
+    for table_name, parameters in data.items():
+        if parameters['api_date'] == parameters['db_date'] and parameters['api_count'] == parameters['db_count']:
+            body += f"""<h5 style="color:green"> OK - Tabela {table_name} - data api {parameters['api_date']} data db {parameters['db_date']} count api {parameters['api_count']} count db {parameters['db_count']}</h5>\n"""
+        else:
+            body += f"""<h5 style="color:red">BŁĄD - Tabela {table_name} - data api {parameters['api_date']} data db {parameters['db_date']} count api {parameters['api_count']} count db {parameters['db_count']}</h5>\n"""
+            errors_count += 1
+    body = f"<h1>LICZBA BŁĘDÓW: {errors_count}</h1>\n" + body
+except Exception as e:
+    with open ('logfile.log', 'a') as logfile:
+        logfile.write(f"Problem z importem pliku email.json - {e}\n")
+        
+#wysylka maila
+try:
+    to_address = json.loads(to_address_str)
+    msg = MIMEMultipart()
+    msg['From'] = from_address
+    msg["To"] = ", ".join(to_address)
+    msg['Subject'] = f"Import danych systel {formatDateTime}."
+    
+except Exception as e:
+    with open ('logfile.log', 'a') as file:
+        file.write(f""" Problem z wysłaniem email - {str(e)}\n""")
 
-for k,v in api_db_compare.items():
-    email_update_json(k,v,formatted_date)
+msg.attach(MIMEText(body, 'html'))
+try:
+    server = smtplib.SMTP('smtp-mail.outlook.com', 587)
+    server.starttls()
+    server.login(from_address, password)
+    text = msg.as_string()
+    server.sendmail(from_address, to_address, text)
+    server.quit()    
+except Exception as e:
+    with open ('logfile.log', 'a') as file:
+        file.write(f"""{formatDateTime} Problem z wysłaniem maila - {str(e)}\n""")

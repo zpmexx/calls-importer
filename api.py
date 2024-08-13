@@ -96,6 +96,7 @@ headers["Authorization"] = f"Bearer {token}"
 
 errs_number = 0
 
+#plik ze statusem od kiedy dane maja pobierac sie do danej tabeli
 with open('import_status.json', 'r') as file:
     data = json.load(file)
 
@@ -110,9 +111,9 @@ with open ("pobrane_dane_licznik.txt", 'a', encoding='utf-8') as file:
         urlsplit = url.split('/')[-1].split('?')[0]
         csvname = f'csv\{urlsplit}.csv'
         #tutaj url += data z pliku
-        #od from pobiera włącznie
-        #url += f"?from={table_import_date}"
-        url += f"?from=2024-08-01"
+        #od from pobiera włącznie do dzisiaj (nie)włącznie
+        url += f"?from={table_import_date}&to={formatted_date}"
+        #url += f"?from=2024-08-01&to=2024-08-13"
         response = requests.get(url,headers=headers,json=data)  
         if response.status_code == 200:
             data = response.json()

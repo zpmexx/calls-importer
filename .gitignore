@@ -168,3 +168,4 @@ cython_debug/
 *.txt
 importdone.py
 oneimport.py
+*.bat
