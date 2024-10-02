@@ -62,7 +62,7 @@ endpoints = [GetCalls,GetCampaigns,GetCases,GetCaseCustomProperties,GetCaseTicke
              GetRecordGroups,GetRecordItems,GetRecordItemDefinitions,GetScriptitems,GetScriptitemDefinitions,
              GetSmsMessages,GetTeams,GetUsers,GetUserToTeams,GetWorkflows,GetWorkflowStates,GetWorkflowStateHistories,GetUserWorkStats]
 
-# endpoints = [GetCaseTickets]
+endpoints = [GetCaseCustomProperties]
 print(len(endpoints))
 
 endpoints_dict = {
@@ -122,7 +122,7 @@ with open ("pobrane_dane_licznik.txt", 'a', encoding='utf-8') as file:
             
             file.write(f'{url} - {len(data)}\n')
             print(f'{url} - {len(data)}\n')
-            print("wchodze do csv")
+            #print("wchodze do csv")
             with open(csvname, mode='w', newline='') as csv_file:
                 writer = csv.writer(csv_file)
                 try:
@@ -135,7 +135,7 @@ with open ("pobrane_dane_licznik.txt", 'a', encoding='utf-8') as file:
                         writer.writerow(values)
                 except:
                     pass
-            print("koniec csv")
+            #print("koniec csv")
         else:
             errs_number += 1
             file.write(f'{url} - blad {response.status_code}\n')

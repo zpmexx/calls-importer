@@ -81,8 +81,9 @@ def escape_identifier(identifier):
 
 
 # Database connection details
-server = 'cdrl-bidata02'
-database = 'systel_test'
+server = os.getenv('server')
+database = os.getenv('database')
+
 connection_string = f'DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
 from datetime import datetime
 

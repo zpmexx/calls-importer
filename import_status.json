@@ -1,0 +1,62 @@
+{
+    "Call": {
+        "last_success_date": "2024-10-02"
+    },
+    "Campaign": {
+        "last_success_date": "2024-10-02"
+    },
+    "Case": {
+        "last_success_date": "2024-10-02"
+    },
+    "CaseCustomPropertie": {
+        "last_success_date": "2024-10-02"
+    },
+    "CaseTicket": {
+        "last_success_date": "2024-10-02"
+    },
+    "EmailMessage": {
+        "last_success_date": "2024-10-02"
+    },
+    "Record": {
+        "last_success_date": "2024-10-02"
+    },
+    "RecordGroup": {
+        "last_success_date": "2024-10-02"
+    },
+    "RecordItem": {
+        "last_success_date": "2024-10-02"
+    },
+    "RecordItemDefinition": {
+        "last_success_date": "2024-10-02"
+    },
+    "ScriptItem": {
+        "last_success_date": "2024-10-02"
+    },
+    "ScriptItemDefinition": {
+        "last_success_date": "2024-10-02"
+    },
+    "SmsMessage": {
+        "last_success_date": "2024-10-02"
+    },
+    "Team": {
+        "last_success_date": "2024-10-02"
+    },
+    "User": {
+        "last_success_date": "2024-10-02"
+    },
+    "UserToTeam": {
+        "last_success_date": "2024-10-02"
+    },
+    "Workflow": {
+        "last_success_date": "2024-10-02"
+    },
+    "WorkflowState": {
+        "last_success_date": "2024-10-02"
+    },
+    "WorkflowStateHistory": {
+        "last_success_date": "2024-10-02"
+    },
+    "UserWorkState": {
+        "last_success_date": "2024-10-02"
+    }
+}

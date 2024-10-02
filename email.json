@@ -1,0 +1,142 @@
+{
+    "Call": {
+        "api_count": 122,
+        "db_count": 122,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "Campaign": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "Case": {
+        "api_count": 80,
+        "db_count": 80,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "CaseCustomPropertie": {
+        "api_count": 83,
+        "db_count": 83,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "CaseTicket": {
+        "api_count": 84,
+        "db_count": 84,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "EmailMessage": {
+        "api_count": 10,
+        "db_count": 10,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "Record": {
+        "api_count": 47,
+        "db_count": 47,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "RecordGroup": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "RecordItem": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "RecordItemDefinition": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "ScriptItem": {
+        "api_count": 178,
+        "db_count": 178,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "ScriptItemDefinition": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "SmsMessage": {
+        "api_count": 57,
+        "db_count": 57,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "Team": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "User": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "UserToTeam": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "Workflow": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "WorkflowState": {
+        "api_count": 0,
+        "db_count": 0,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "WorkflowStateHistory": {
+        "api_count": 138,
+        "db_count": 138,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    },
+    "UserWorkState": {
+        "api_count": 341,
+        "db_count": 341,
+        "difference": 0,
+        "api_date": "2024-10-02",
+        "db_date": "2024-10-02"
+    }
+}

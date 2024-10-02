@@ -164,8 +164,9 @@ cython_debug/
 *.log
 *.pdf
 *.png
-*.json
-*.txt
+pobrane_dane_licznik.txt
+wgrane_dane_db_licznik.txt
+
 importdone.py
 oneimport.py
 *.bat
