@@ -1,62 +1,62 @@
 {
     "Call": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "Campaign": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "Case": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "CaseCustomPropertie": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "CaseTicket": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "EmailMessage": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "Record": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "RecordGroup": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "RecordItem": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "RecordItemDefinition": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "ScriptItem": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "ScriptItemDefinition": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "SmsMessage": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "Team": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "User": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "UserToTeam": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "Workflow": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "WorkflowState": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "WorkflowStateHistory": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     },
     "UserWorkState": {
-        "last_success_date": "2024-10-02"
+        "last_success_date": "2024-10-08"
     }
 }
